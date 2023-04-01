@@ -7,12 +7,17 @@ tweetBtn.addEventListener('click', function () {
     console.log(tweetInput.value)
 })
 
-document.addEventListener("click", function (e) {
+document.addEventListener('click', function (e) {
     if (e.target.dataset.like) {
         console.log(e)
         handleLikeClick(e.target.dataset.like)
     }
+    else if (e.target.dataset.retweet) {
+        console.log(e.target.dataset.retweet)
+        handleRetweetClick(e.target.dataset.retweet)
+    }
 })
+
 
 function handleLikeClick(tweetId) {
     const targetTweetObj = tweetsData.filter(function (tweet) {
@@ -21,13 +26,30 @@ function handleLikeClick(tweetId) {
 
     if (targetTweetObj.isLiked) {
         targetTweetObj.likes--
-        targetTweetObj.isLiked = false
     }
     else {
         targetTweetObj.likes++
-        targetTweetObj.isLiked = true
     }
+    targetTweetObj.isLiked = !targetTweetObj.isLiked
     return render()
+}
+
+function handleRetweetClick(tweetId) {
+    const targetTweetObj = tweetsData.filter(function (tweet) {
+        return tweet.uuid === tweetId
+    })[0]
+
+    console.log(targetTweetObj)
+
+    if (targetTweetObj.isRetweeted) {
+        targetTweetObj.retweets--
+    }
+
+    else {
+        targetTweetObj.retweets++
+    }
+    targetTweetObj.isRetweeted = !targetTweetObj.isRetweeted
+    render()
 }
 
 function getFeedHtml(data) {
