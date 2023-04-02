@@ -3,7 +3,6 @@ import { tweetsData } from '/data.js'
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 console.log(uuidv4()); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
-const tweetInput = document.getElementById('tweet-input')
 
 document.addEventListener('click', function (e) {
     if (e.target.dataset.like) {
@@ -59,6 +58,7 @@ function handleReplyClick(replyId) {
 }
 
 function handleTweetBtnClick() {
+    const tweetInput = document.getElementById('tweet-input')
     const newTweetObj = {
         handle: `@Scrimba`,
         profilePic: `images/scrimbalogo.png`,
@@ -70,8 +70,12 @@ function handleTweetBtnClick() {
         isRetweeted: false,
         uuid: uuidv4()
     }
-    tweetsData.unshift(newTweetObj)
-    render()
+    if (tweetInput.value) {
+        tweetsData.unshift(newTweetObj)
+        render()
+    }
+
+    tweetInput.value = ''
 }
 
 function getFeedHtml(data) {
