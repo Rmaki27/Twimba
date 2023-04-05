@@ -1,7 +1,6 @@
 
 import { tweetsData } from '/data.js'
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
-console.log(uuidv4()); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
 
 document.addEventListener('click', function (e) {
@@ -16,6 +15,9 @@ document.addEventListener('click', function (e) {
     }
     else if (e.target.id === 'tweet-btn') {
         handleTweetBtnClick()
+    }
+    else if (e.target.dataset.newr) {
+        handleTweetReplyBtnClick(e.target.dataset.newr)
     }
 })
 
@@ -40,8 +42,6 @@ function handleRetweetClick(tweetId) {
         return tweet.uuid === tweetId
     })[0]
 
-    console.log(targetTweetObj)
-
     if (targetTweetObj.isRetweeted) {
         targetTweetObj.retweets--
     }
@@ -57,8 +57,9 @@ function handleReplyClick(replyId) {
     document.getElementById(`replies-${replyId}`).classList.toggle('hidden')
 }
 
-function handleTweetBtnClick() {
+function handleTweetBtnClick(tweetId) {
     const tweetInput = document.getElementById('tweet-input')
+    console.log(tweetInput)
     const newTweetObj = {
         handle: `@Scrimba`,
         profilePic: `images/scrimbalogo.png`,
@@ -72,6 +73,28 @@ function handleTweetBtnClick() {
     }
     if (tweetInput.value) {
         tweetsData.unshift(newTweetObj)
+        render()
+    }
+
+    tweetInput.value = ''
+}
+
+function handleTweetReplyBtnClick(tweetId) {
+    console.log(tweetId)
+    const tweetReply = document.getElementById('reply-textarea')
+    const newReplyObj = {
+        handle: `@rando6789`,
+        profilePic: `images/rando.png`,
+        likes: 0,
+        retweets: 0,
+        tweetText: `${tweetReply.value}`,
+        replies: [],
+        isLiked: false,
+        isRetweeted: false,
+    }
+
+    if (tweetReply.value && tweetId === tweetsData.uuid) {
+        tweetsData.push(newReplyObj)
         render()
     }
 
@@ -101,11 +124,26 @@ function getFeedHtml(data) {
                 <div class="tweet-inner">
                     <img src="${reply.profilePic}" class="profile-pic">
                         <div>
-                            <p class="handle">${reply.handle}</p>
-                            <p class="tweet-text">${reply.tweetText}</p>
+                            <div class="tweet-detail">
+                                <p class="handle">${reply.handle}</p>
+                                <p class="tweet-text">${reply.tweetText}</p>
+                                <span class="tweet-detail">
+                                    <i class="fa-regular fa-comment-dots"></i>
+                                    ${reply.replies.length}
+                                </span>
+                                <span class="tweet-detail">
+                                    <i class="fa-solid fa-retweet ${retweetIconClass}" data-retweet="${tweet.uuid}"></i>
+                                    ${reply.retweets}
+                                </span>
+                                <span class="tweet-detail">
+                                    <i class="fa-solid fa-heart ${likeIconClass}" data-like="${tweet.uuid}"></i>
+                                    ${reply.likes}
+                                </span>
+                            </div>  
                         </div>
                     </div>
-            </div>`
+
+                </div>`
             })
         }
 
@@ -122,18 +160,20 @@ function getFeedHtml(data) {
                             ${tweet.replies.length}
                         </span>
                         <span class="tweet-detail">
-                        <i class="fa-solid fa-heart ${likeIconClass}" data-like="${tweet.uuid}"></i>
-                            ${tweet.likes}
-                        </span>
-                        <span class="tweet-detail">
                         <i class="fa-solid fa-retweet ${retweetIconClass}" data-retweet="${tweet.uuid}"></i>
                             ${tweet.retweets}
+                        </span>
+                        <span class="tweet-detail">
+                        <i class="fa-solid fa-heart ${likeIconClass}" data-like="${tweet.uuid}"></i>
+                            ${tweet.likes}
                         </span>
                     </div>   
                 </div>            
             </div>
-            <div id="replies-${tweet.uuid}">
+            <div id="replies-${tweet.uuid}" class="hidden">
                 ${repliesHtml}
+                <textarea placeholder="Tweet your reply here" class="reply-textarea" id="reply-textarea"></textarea>
+                <button class="reply-btn" id="reply-btn" data-newr="${tweet.uuid}">Tweet</button>
             </div>   
         </div>
         `

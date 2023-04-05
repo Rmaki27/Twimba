@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
-    background-color: #576CBC;
+    /* background-color: #576CBC; */
 }
 
 /* typography and icons */
@@ -52,14 +52,16 @@ header {
 /* textareas + btn */
 
 textarea {
-    border: none;
     padding: 10px;
-    margin: 0 0 20px 0;
-    height: 60px;
+    margin: 15px 0 20px 0;
+    height: 70px;
     width: 100%;
     font-size: 20px;
     line-height: 30px;
     resize: none;
+    border: #D3D3D3 solid 1px;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 button {
@@ -97,8 +99,9 @@ button {
 }
 
 .tweet-detail {
-    display: flex;
-    gap: 4px;
+    display: inline-block;
+    margin-right: 15px;
+    /* gap: 4px; */
 }
 
 .tweet-reply {
@@ -106,6 +109,22 @@ button {
     padding: 20px 0 0 0px;
     margin: 10px 0 10px 40px;
     width: 80%;
+}
+
+.reply-textarea {
+    padding: 5px 0 10px 10px;
+    margin: 10px 0 10px 40px;
+    height: 50px;
+    width: 80%;
+    font-size: 16px;
+}
+
+.reply-btn {
+    height: 30px;
+    width: 40%;
+    margin-left: 152px;
+    font-size: 16px;
+    border-radius: 20px;
 }
 
 .handle {
