@@ -125,6 +125,7 @@ button {
     margin-left: 152px;
     font-size: 16px;
     border-radius: 20px;
+    padding: 0.5em 1.5em;
 }
 
 .handle {
